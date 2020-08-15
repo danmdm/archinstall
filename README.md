@@ -167,17 +167,19 @@ passwd
 Install grub on Non-UEFI systems
 
 Install grub package first:
-
+```
 pacman -S grub
+```
 
 And then install grub like this (don’t put the disk number sda1, just the disk name sda):
-
+```
 grub-install /dev/sda
-
+```
 
 Last step:
-
+```
 grub-mkconfig -o /boot/grub/grub.cfg
+```
 
 ## Install a network manager
 
