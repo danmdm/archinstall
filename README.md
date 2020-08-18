@@ -1,48 +1,5 @@
 # Instalare arch
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [Instalare arch](#instalare-arch)
-	- [Verify the boot mode](#verify-the-boot-mode)
-	- [Connect to the internet](#connect-to-the-internet)
-	- [Update the system clock](#update-the-system-clock)
-	- [Partition the disks](#partition-the-disks)
-		- [Create an ESP partition (For UEFI systems only)](#create-an-esp-partition-for-uefi-systems-only)
-		- [Create root partition for both UEFI and legacy systems](#create-root-partition-for-both-uefi-and-legacy-systems)
-	- [Create filesystems](#create-filesystems)
-		- [Creating filesystem for UEFI system](#creating-filesystem-for-uefi-system)
-		- [Creating filesystem for non-UEFI system](#creating-filesystem-for-non-uefi-system)
-	- [Mount the file systems](#mount-the-file-systems)
-	- [Installation](#installation)
-	- [Configure the system](#configure-the-system)
-		- [chroot](#chroot)
-		- [timezone](#timezone)
-		- [locale](#locale)
-		- [Network configuration](#network-configuration)
-		- [Set up root passwd](#set-up-root-passwd)
-	- [Install grub](#install-grub)
-		- [Install grub on UEFI systems](#install-grub-on-uefi-systems)
-		- [Install grub on Non-UEFI systems](#install-grub-on-non-uefi-systems)
-	- [Generate fstab](#generate-fstab)
-	- [Install a network manager](#install-a-network-manager)
-	- [Restart](#restart)
-	- [Activate a connection](#activate-a-connection)
-	- [Create a sudo-user](#create-a-sudo-user)
-	- [Install a desktop environment](#install-a-desktop-environment)
-	- [Create user directories](#create-user-directories)
-	- [Install pamac](#install-pamac)
-	- [Install some applications](#install-some-applications)
-	- [Access windows shares](#access-windows-shares)
-	- [Install microcode for intel procs](#install-microcode-for-intel-procs)
-	- [Do some optimizations](#do-some-optimizations)
-		- [Disable wifi poweroff on laptop lid close](#disable-wifi-poweroff-on-laptop-lid-close)
-		- [Speed up your Intel wireless chipset](#speed-up-your-intel-wireless-chipset)
-		- [Speed up makepkg](#speed-up-makepkg)
-	- [Install a scanner and printer](#install-a-scanner-and-printer)
-
-<!-- /TOC -->
-
-
 ## Verify the boot mode
 
 The easiest way to find out if you are running UEFI or BIOS is to look  for a folder /sys/firmware/efi. The folder will be missing if your  system is using BIOS. 
@@ -393,15 +350,31 @@ makepkg -sic
 
 ## Install some applications
 
-Xapps: xed xviewer xreader 
+Xapps: 
 
-Cinnamon/Gnome stuff: mintlocale mint-themes mint-y-icons nemo-fileroller lightdm-gtk-greeter-settings gnome-system-monitor gnome-calculator gnome-screenshot gnome-usage gnome-disk
+```
+pacman -S xed xviewer xreader
+```
+
+Cinnamon/Gnome stuff: 
+
+```
+pacman -S mintlocale mint-themes mint-y-icons nemo-fileroller lightdm-gtk-greeter-settings gnome-system-monitor gnome-calculator gnome-screenshot gnome-usage gnome-disk
+```
 
 Cinnamon applets: weather, system monitor (install libgtop + restart)
 
-Other stuff: doublecmd-gtk2, ttf-ms-fonts, viewnior, , gparted, transmission, opera, opera-ffmpeg-codecs catfish
+Other stuff: 
 
-Office suite: libreoffice-fresh, libreoffice-fresh-ro, hunspell, hunspell-ro
+```
+pacman -S doublecmd-gtk2 ttf-ms-fonts viewnior  gparted transmission-gtk opera opera-ffmpeg-codecs catfish typora atom geany
+```
+
+Office suite: 
+
+```
+pacman -S libreoffice-fresh libreoffice-fresh-ro hunspell hunspell-ro
+```
 
 ## Access windows shares
 
@@ -431,6 +404,15 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ### Disable wifi poweroff on laptop lid close
 
+First find out if Arch applies power management to your wireless chipset:
+
+```
+pacman -S wireless_tools
+iwconfig
+```
+
+You can then not only see the name for your wireless chipset (for example: wlp2s0), but also whether Power Management is **on** for it. When it's **off**, or when no mention is made of Power Management at all, you don't need to do anything.
+
 Modify /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf:
 
 ```
@@ -439,6 +421,22 @@ wifi.powersave = 2
 ```
 
 ### Speed up your Intel wireless chipset
+
+If you have a (reasonably) modern wireless chipset from Intel, it'll run on the iwlwifi driver. If so, you might be able to increase its speed noticeably, by turning on Tx AMPDU for it.
+
+ The purpose of AMPDU is to improve data transmission by aggregating or  grouping together several sets of data. Thus it sharply reduces the  amount of transmission overhead.
+
+ It used to be "on" by default in the iwlwifi driver. But several years  ago, it was turned off because of stability issues on a few wifi  chipsets. This problem affects, however, only a minority of chipsets...
+
+ For turning it on, proceed like this:
+
+First check whether your chipset runs on the iwlwifi driver:
+
+```
+lsmod | grep iwlwifi
+```
+
+If the terminal output contain the word **iwlwifi** proceed with the next step:
 
 ```
 echo "options iwlwifi 11n_disable=8" | sudo tee /etc/modprobe.d/iwlwifi-speed.conf
@@ -462,11 +460,25 @@ And:
 MAKEFLAGS="-j8"
 ```
 
+### Decrease the swap use
+
+This is especially noticeable on computers with relatively low RAM memory (2 GB or less): they tend to be far too slow. Check your current swappiness setting:
+
+```
+cat /proc/sys/vm/swappiness
+```
+
+The result will probably be 60. To set the swappiness value permanently, create a sysctl.d configuration file. For example:
+
+```
+mcedit /etc/sysctl.d/99-swappiness.conf
+vm.swappiness=10
+```
+
 ## Install a scanner and printer
 
 ```
 pacman -S  xsane simple-scan hplip cups cups-pdf
 systemctl enable org.cups.cupsd.service
 ```
-
 
