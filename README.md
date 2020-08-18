@@ -1,6 +1,10 @@
 # Instalare arch
 
-## Verify the boot
+[TOC]
+
+
+
+## Verify the boot mode
 
 The easiest way to find out if you are running UEFI or BIOS is to look  for a folder /sys/firmware/efi. The folder will be missing if your  system is using BIOS. 
 
@@ -384,7 +388,9 @@ sudo pacman -S intel-ucode
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-## Disable wifi poweroff on laptop lid close
+## Do some optimizations
+
+### Disable wifi poweroff on laptop lid close
 
 Modify /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf:
 
@@ -393,20 +399,13 @@ Modify /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf:
 wifi.powersave = 2
 ```
 
-## Speed up your Intel wireless chipset
+### Speed up your Intel wireless chipset
 
 ```
 echo "options iwlwifi 11n_disable=8" | sudo tee /etc/modprobe.d/iwlwifi-speed.conf
 ```
 
-## Install a scanner and printer
-
-```
-pacman -S  xsane simple-scan hplip cups cups-pdf
-systemctl enable org.cups.cupsd.service
-```
-
-## Speed up makepkg
+### Speed up makepkg
 
 To skip compression, you'll want to make the following change to your /etc/makepkg.conf:
 
@@ -422,5 +421,12 @@ And:
 ```
 #-- Make Flags: change this for DistCC/SMP systems
 MAKEFLAGS="-j8"
+```
+
+## Install a scanner and printer
+
+```
+pacman -S  xsane simple-scan hplip cups cups-pdf
+systemctl enable org.cups.cupsd.service
 ```
 
