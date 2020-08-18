@@ -1,7 +1,50 @@
 # Instalare arch
 
-[TOC]
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Instalare arch](#instalare-arch)
+	- [Verify the boot mode](#verify-the-boot-mode)
+	- [Connect to the internet](#connect-to-the-internet)
+	- [Update the system clock](#update-the-system-clock)
+	- [Partition the disks](#partition-the-disks)
+		- [Create an ESP partition (For UEFI systems only)](#create-an-esp-partition-for-uefi-systems-only)
+		- [Create root partition for both UEFI and legacy systems](#create-root-partition-for-both-uefi-and-legacy-systems)
+	- [Create filesystems](#create-filesystems)
+		- [Creating filesystem for UEFI system](#creating-filesystem-for-uefi-system)
+		- [Creating filesystem for non-UEFI system](#creating-filesystem-for-non-uefi-system)
+	- [Mount the file systems](#mount-the-file-systems)
+	- [Installation](#installation)
+	- [Configure the system](#configure-the-system)
+		- [chroot](#chroot)
+		- [timezone](#timezone)
+		- [locale](#locale)
+		- [Network configuration](#network-configuration)
+		- [Set up root passwd](#set-up-root-passwd)
+	- [Install grub](#install-grub)
+		- [Install grub on UEFI systems](#install-grub-on-uefi-systems)
+		- [Install grub on Non-UEFI systems](#install-grub-on-non-uefi-systems)
+	- [Generate fstab](#generate-fstab)
+	- [Install a network manager](#install-a-network-manager)
+	- [Restart](#restart)
+	- [Activate a connection](#activate-a-connection)
+	- [Create a sudo-user](#create-a-sudo-user)
+	- [](#)
+	- [](#)
+	- [Install a desktop environment](#install-a-desktop-environment)
+	- [Create user directories](#create-user-directories)
+	- [Install pamac](#install-pamac)
+	- [Install some applications](#install-some-applications)
+	- [Access windows shares](#access-windows-shares)
+	- [Install microcode for intel procs](#install-microcode-for-intel-procs)
+	- [Do some optimizations](#do-some-optimizations)
+		- [Disable wifi poweroff on laptop lid close](#disable-wifi-poweroff-on-laptop-lid-close)
+		- [Speed up your Intel wireless chipset](#speed-up-your-intel-wireless-chipset)
+		- [Speed up makepkg](#speed-up-makepkg)
+- [PKGEXT='.pkg.tar.xz'](#pkgextpkgtarxz)
+- [-- Make Flags: change this for DistCC/SMP systems](#-make-flags-change-this-for-distccsmp-systems)
+	- [Install a scanner and printer](#install-a-scanner-and-printer)
+
+<!-- /TOC -->
 
 
 ## Verify the boot mode
@@ -429,4 +472,5 @@ MAKEFLAGS="-j8"
 pacman -S  xsane simple-scan hplip cups cups-pdf
 systemctl enable org.cups.cupsd.service
 ```
+
 
