@@ -348,13 +348,34 @@ cd pamac-aur/
 makepkg -sic
 ```
 
-## Install xapps
+## Install some applications
 
-xed, xviewer, xreader, mintlocale
-cinnamon applets: weather, system monitor (install libgtop + restart)
-mint-themes, mint-y-icons, gnome-system-monitor, gnome-calculator, gnome-screenshot, lightdm-gtk-greeter-settings, nemo-fileroller,
-doublecmd-gtk2, ttf-ms-fonts, viewnior, gnome-usage, gnome-disk, gparted, transmission, opera, opera-ffmpeg-codecs
-catfish
+Xapps: xed xviewer xreader 
+
+Cinnamon/Gnome stuff: mintlocale mint-themes mint-y-icons nemo-fileroller lightdm-gtk-greeter-settings gnome-system-monitor gnome-calculator gnome-screenshot gnome-usage gnome-disk
+
+Cinnamon applets: weather, system monitor (install libgtop + restart)
+
+Other stuff: doublecmd-gtk2, ttf-ms-fonts, viewnior, , gparted, transmission, opera, opera-ffmpeg-codecs catfish
+
+Office suite: libreoffice-fresh, libreoffice-fresh-ro, hunspell, hunspell-ro
+
+## Access windows shares
+
+```bash
+pacman -S smbclient gvfs-smb
+```
+
+Because the samba package does not provide this file, one needs to create it . A documented example as in `smb.conf.default` from the [Samba git repository](https://git.samba.org/samba.git/?p=samba.git;a=blob_plain;f=examples/smb.conf.default;hb=HEAD) may be used to setup `/etc/samba/smb.conf`.  After installing cifs-utils or smbclient, load the `cifs` kernel module or reboot to prevent mount fails.
+
+Latest versions of Samba no longer offer older authentication methods and protocols which are still used by some older clients (IP cameras, etc). These devices usually require Samba server to allow NTMLv1 authentication and NT1 version of the protocol, known as CIFS. For these devices to work with latest Samba, you need to add these two configuration parameters into [global] section:
+
+```
+server min protocol = NT1
+ntlm auth = yes
+```
+
+Anonymous/guest access to a share requires just the first parameter. If the old device will access with username and password, you also need the add the second line too.
 
 ## Install microcode for intel procs
 
@@ -403,6 +424,3 @@ And:
 MAKEFLAGS="-j8"
 ```
 
-## Office suite
-
-libreoffice-fresh, libreoffice-fresh-ro, hunspell, hunspell-ro
