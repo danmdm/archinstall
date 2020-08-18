@@ -40,8 +40,6 @@
 		- [Disable wifi poweroff on laptop lid close](#disable-wifi-poweroff-on-laptop-lid-close)
 		- [Speed up your Intel wireless chipset](#speed-up-your-intel-wireless-chipset)
 		- [Speed up makepkg](#speed-up-makepkg)
-- [PKGEXT='.pkg.tar.xz'](#pkgextpkgtarxz)
-- [-- Make Flags: change this for DistCC/SMP systems](#-make-flags-change-this-for-distccsmp-systems)
 	- [Install a scanner and printer](#install-a-scanner-and-printer)
 
 <!-- /TOC -->
