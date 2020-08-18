@@ -28,8 +28,6 @@
 	- [Restart](#restart)
 	- [Activate a connection](#activate-a-connection)
 	- [Create a sudo-user](#create-a-sudo-user)
-	- [](#)
-	- [](#)
 	- [Install a desktop environment](#install-a-desktop-environment)
 	- [Create user directories](#create-user-directories)
 	- [Install pamac](#install-pamac)
