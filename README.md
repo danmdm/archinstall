@@ -120,7 +120,7 @@ pacman -S reflector
 Now, get the good mirror list with reflector and save it to mirrorlist.
 
 ```bash
-reflector -c "RO" -f 12 -l 10 -n 12 --save  etc/pacman.d/mirrorlist
+reflector -c "RO" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 ```
 
 Use the pacstrap script to install the base package, Linux kernel and firmware for common hardware:
@@ -251,7 +251,20 @@ And last step:
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
+## Install a network manager
+
+```
+pacman -S networkmanager
+systemctl enable NetworkManager.service
+```
+
 ## Generate fstab
+
+Exit from chroot:
+
+```
+exit
+```
 
 Create any remaining mount points, mount the rest of devices and generate fstab:
 
@@ -266,21 +279,13 @@ Modify new generated fstab file according your preferences like change noatime o
 mcedit /mnt/etc/fstab
 ```
 
-## Install a network manager
-
-```
-pacman -S networkmanager
-systemctl enable NetworkManager.service
-```
-
 ## Restart
 
 ```
-exit
 reboot
 ```
 
-## Activate a connection
+##  Activate a connection
 
 Activate a connection using network manager ncursed interface:
 
