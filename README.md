@@ -314,26 +314,18 @@ dan ALL=(ALL) ALL
 ##
 ```
 
-## Install a desktop environment
+## Install Cinnamon
 
 ```
 pacman -S xorg
 pacman -S cinnamon
 pacman -S firefox
+pacman -S gnome-terminal xed xreader xdg-user-dirs
 pacman -S lightdm lightdm-gtk-greeter
 systemctl enable lightdm.service
 ```
 
 then reboot
-
-## Create user directories
-
-
-
-```
-pacman -S xdg-user-dirs
-xdg-user-dirs-update
-```
 
 ## Install pamac
 
@@ -342,6 +334,8 @@ Install devel libs:
 ```
 sudo pacman -Syyu base-devel git
 ```
+
+optimize makepkg here
 
 Clone the Pamac PKGBUILD and build dependencies into a newly-created temporary folder under your home directory:
 
@@ -353,33 +347,14 @@ cd pamac-aur/
 makepkg -sic
 ```
 
-## Install some applications
-
-Xapps: 
+Pamac display empty results when browsing categories. You can fix by downgrade archlinux-appstream-data or use this command :
 
 ```
-pacman -S xed xviewer xreader
+zcat /usr/share/app-info/xmls/community.xml.gz | sed 's|<em>||g;s|<\/em>||g;' | gzip > "new.xml.gz"
+sudo cp new.xml.gz /usr/share/app-info/xmls/community.xml.gz
+sudo appstreamcli refresh-cache --force
 ```
-
-Cinnamon/Gnome stuff: 
-
-```
-pacman -S mintlocale mint-themes mint-y-icons nemo-fileroller lightdm-gtk-greeter-settings gnome-system-monitor gnome-calculator gnome-screenshot gnome-usage gnome-disk
-```
-
-Cinnamon applets: weather, system monitor (install libgtop + restart)
-
-Other stuff: 
-
-```
-pacman -S doublecmd-gtk2 ttf-ms-fonts viewnior  gparted transmission-gtk opera opera-ffmpeg-codecs catfish typora atom geany
-```
-
-Office suite: 
-
-```
-pacman -S libreoffice-fresh libreoffice-fresh-ro hunspell hunspell-ro
-```
+for appastreamcli install package appstream
 
 ## Access windows shares
 
@@ -393,10 +368,15 @@ Latest versions of Samba no longer offer older authentication methods and protoc
 
 ```
 server min protocol = NT1
+client min protocol = NT1
 ntlm auth = yes
 ```
 
 Anonymous/guest access to a share requires just the first parameter. If the old device will access with username and password, you also need the add the second line too.
+
+smbtree -b -N
+
+
 
 ## Install microcode for intel procs
 
@@ -483,7 +463,159 @@ vm.swappiness=10
 ## Install a scanner and printer
 
 ```
-pacman -S  xsane simple-scan hplip cups cups-pdf
+pacman -S  xsane simple-scan hplip cups cups-pdf system-config-printer
 systemctl enable org.cups.cupsd.service
 ```
+
+## Install a lts kernel
+
+```
+pacman -S linux-lts linux-lts-headers
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+## Install virtualbox
+
+Use a lts kernel, then install:
+
+```
+virtualbox, virtualbox-host-dkms, virtualbox-guest-iso, virtualbox-ext-oracle(AUR)
+```
+
+To use the USB ports of your host machine in your virtual machines, add  users that will be authorized to use this feature to the `vboxusers` user group.
+
+
+
+## Install some applications
+
+### Utilities:
+
+#### Terminal
+
+```
+gnome-terminal, xterm
+```
+
+#### File managers
+
+```
+mc, doublecmd-gtk2
+```
+
+#### Archive managers
+
+```
+file-roller (nemo-fileroller), p7zip, unrar
+```
+
+#### Diff comparison
+
+```
+meld
+```
+
+#### File searching
+
+```
+catfish
+```
+
+#### Integrated development environments
+
+```
+geany (geany-plugins), atom
+```
+
+#### Character selectors
+
+```
+gucharmap
+```
+
+#### Partitioning and formatting tools
+
+```
+gparted(with all dependecies), gnome-disk-utility
+```
+
+#### Disk usage display
+
+```
+baobab, gdmap
+```
+
+#### Disk image writing
+
+```
+balena-etcher, usbimager
+```
+
+#### System monitors
+
+```
+gnome-system-monitor, gnome-usage, htop, stacer, pacmanlogviewer
+```
+
+#### System information viewers
+
+```
+hardinfo, inxi, screenfetch, gnome-firmware(fwupd gui)
+```
+
+#### Font viewers
+
+```
+font-manager
+```
+
+#### PDF viewer
+
+```
+ xviewer(AUR)
+```
+
+#### Image editing/viewer
+
+```
+viewnior, gimp
+```
+
+#### Sound, video
+
+```
+audacious, vlc, kodi
+```
+
+#### Internet
+
+```
+transmission-gtk, opera (opera-ffmpeg-codecs), filezilla
+```
+
+#### Networking
+
+```
+openssh
+```
+
+#### Cinnamon stuff
+
+```
+mintlocale, mint-themes, mint-y-icons
+```
+
+Cinnamon applets: weather, system monitor (install libgtop + restart), session manager
+
+#### Accesories: 
+
+```
+lightdm-gtk-greeter-settings, gnome-calculator, gnome-screenshot, 
+```
+
+#### Office suite 
+
+```
+libreoffice-fresh, libreoffice-fresh-ro, hunspell, hunspell-ro, ttf-ms-fonts, typora
+```
+
 
