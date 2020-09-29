@@ -203,7 +203,7 @@ passwd
 Make sure that you are still using arch-chroot. Install required packages:
 
 ```
-pacman -S grub efibootmgr
+pacman -S grub efibootmgr os-prober
 ```
 
 Create the directory where EFI partition will be mounted:
